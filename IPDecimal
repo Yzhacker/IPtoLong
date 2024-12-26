@@ -1,0 +1,42 @@
+def ip_to_long(ip_address):
+    """
+    Convert IPv4 address to long number
+    
+    Args:
+        ip_address (str): IPv4 address in format 'xxx.xxx.xxx.xxx'
+        
+    Returns:
+        int: Long number representation of the IP
+        
+    Raises:
+        ValueError: If IP format is invalid
+    """
+    try:
+        # Split IP into octets
+        octets = ip_address.split('.')
+        
+        # Validate format
+        if len(octets) != 4:
+            raise ValueError("IP must have 4 octets")
+            
+        # Convert and validate each octet
+        octets = [int(octet) for octet in octets]
+        for octet in octets:
+            if octet < 0 or octet > 255:
+                raise ValueError("Each octet must be between 0 and 255")
+                
+        # Calculate long number
+        return (octets[0] << 24) + (octets[1] << 16) + (octets[2] << 8) + octets[3]
+        
+    except Exception as e:
+        raise ValueError(f"Invalid IP address format: {str(e)}")
+
+# Example usage
+if __name__ == "__main__":
+    try:
+        ip = "192.168.1.1"
+        result = ip_to_long(ip)
+        print(f"IP: {ip}")
+        print(f"Long number: {result}")
+    except ValueError as e:
+        print(f"Error: {e}")
